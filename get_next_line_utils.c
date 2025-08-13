@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 12:27:14 by lbento            #+#    #+#             */
-/*   Updated: 2025/08/12 18:38:49 by lbento           ###   ########.fr       */
+/*   Updated: 2025/08/13 19:42:28 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,24 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	result[i] = '\0';
 	return (result);
+}
+
+char	*ft_strdup(const char *s)
+{
+	int		len;
+	int		i;
+	char	*str;
+
+	len = ft_strlen(s);
+	str = malloc(len + 1 * sizeof(char));
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }
