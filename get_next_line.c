@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 10:51:16 by lbento            #+#    #+#             */
-/*   Updated: 2025/08/14 17:28:59 by lbento           ###   ########.fr       */
+/*   Updated: 2025/08/14 20:23:35 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@ char	*get_next_line(int fd)
 	static char	*remaining;
 	char		*line;
 	char		*buffer;
+	int			test_read;
 
 	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	test_read = read(fd, 0, 0);
 	if (!buffer)
 		return (NULL);
-	if (fd < 0 || BUFFER_SIZE == 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || test_read < 0)
 	{
 		free(remaining);
 		free(buffer);
@@ -34,14 +36,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = read_line(fd, remaining, buffer);
-	if (!line)
-	{
-		free(buffer);
-		return (NULL);
-	}
-	remaining = save_file(line);
 	free(buffer);
 	buffer = NULL;
+	if (!line)
+		return (NULL);
+	remaining = save_file(line);
 	return (line);
 }
 
@@ -54,12 +53,12 @@ static char	*read_line(int fd, char *remaining, char *buffer)
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
+		if (bytes_read == -1)
 		{
 			free(remaining);
 			return (NULL);
 		}
-		if (bytes_read == 0)
+		else if (bytes_read == 0)
 			return (remaining);
 		buffer[bytes_read] = '\0';
 		if (!remaining)
@@ -82,12 +81,12 @@ static char	*save_file(char *line)
 	i = 0;
 	while (line[i] != '\n' && line[i] != '\0')
 		i++;
-	if (line[i] == '\0' || line[1] == '\0')
+	if (line[i] == '\0')
 	{
 		return (NULL);
 	}
 	rest = ft_substr(line, i + 1, ft_strlen(line) - i);
-	if (!rest)
+	if (*rest == '\0')
 	{
 		free(rest);
 		rest = NULL;
@@ -106,6 +105,8 @@ static char	*save_file(char *line)
 
 // 	fd = open("test.txt", O_RDONLY);
 // 	line = get_next_line(fd);
+// 	if(!line)
+// 	printf("Vindo nulo");
 // 	while (line)
 // 	{
 // 		printf("%s", line);
