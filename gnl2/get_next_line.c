@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/14 10:51:16 by lbento            #+#    #+#             */
+/*   Updated: 2025/08/14 10:51:16 by lbento           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
+char    *get_next_line(int fd);
 static char    *_fill_line_buffer(int fd, char *left_c, char *buffer);
 static char    *_set_line(char *line);
-static char    *ft_strchr(char *s, int c);
 
 char    *get_next_line(int fd)
 {
@@ -141,20 +153,3 @@ static char	*_fill_line_buffer(int fd, char *left_c, char *buffer)
 	return (left_c);
 }
 
-static char	*ft_strchr(char *s, int c)
-{
-	unsigned int	i;
-	char			cc;
-
-	cc = (char) c;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == cc)
-			return ((char *) &s[i]);
-		i++;
-	}
-	if (s[i] == cc)
-		return ((char *) &s[i]);
-	return (NULL);
-}
