@@ -5,93 +5,89 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/06 12:26:37 by lbento            #+#    #+#             */
-/*   Updated: 2025/08/13 20:12:38 by lbento           ###   ########.fr       */
+/*   Created: 2025/08/14 10:51:16 by lbento            #+#    #+#             */
+/*   Updated: 2025/08/14 10:51:16 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char		*get_next_line(int fd);
-static char	*read_line(int fd, char *buffer);
-static char	*fill_line(char *remainder);
+char    *get_next_line(int fd);
+static char    *read_line(int fd, char *left_c, char *buffer);
+static char    *save_file(char *line);
 
-char	*get_next_line(int fd)
+char    *get_next_line(int fd)
 {
-	char		*line;
-	static char	*remainder;
+   static char *remaining;
+   char        *line;
+   char        *buffer;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-// if (remainder == NULL)
-// 	remainder = ft_strjoin(remainder, "");
-	if (ft_strlen(remainder) == 0)
-	{
-		free(remainder);
-		remainder = NULL;
-		return (NULL);
-	}
-	remainder = read_line(fd, remainder);
-	if (!remainder)
-		return (NULL);
-	line = fill_line(remainder);
-	return (line);
+   buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+   if (!buffer)
+     return (NULL);
+   if (fd < 0 || BUFFER_SIZE == 0 || read(fd, 0, 0) < 0)
+   {
+     free(remaining);
+     free(buffer);
+     remaining = NULL;
+     buffer = NULL;
+     return (NULL);
+   }
+   line = read_line(fd, remaining, buffer);
+   free(buffer);
+   buffer = NULL;
+   if (!line)
+   	return (NULL);
+   remaining = save_file(line);
+   return (line);
 }
 
-static char	*read_line(int fd, char *remainder)
+static char	*read_line(int fd, char *remaining, char *buffer)
 {
-	char	*buffer;
-	int		bytes_read;
+	int	bytes_read;
+	char	*temp;
 
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!remainder)
-		remainder = malloc(1);
 	bytes_read = 1;
-	while (bytes_read > 0 && ft_strchr(remainder, '\n') == NULL)
+	while (bytes_read > 0 || !ft_strchr(buffer, '\n'))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
+		bytes_read = read(fd, buffer, BUFFER_SIZE + 1);
+		if (bytes_read == -1)
 		{
-			free(remainder);
-			free(buffer);
+			free(remaining);
 			return (NULL);
 		}
+		else if (bytes_read == 0)
+			break ;
 		buffer[bytes_read] = '\0';
-		remainder = ft_strjoin(remainder, buffer);
-		free(remainder);
+		if (!remaining)
+			remaining = ft_strdup("");
+		temp = remaining;
+		remaining = ft_strjoin(temp, buffer);
+		free(temp);
+		temp = NULL;
 	}
-	free(buffer);
-	if (bytes_read < 0)
-		return (NULL);
-	return (remainder);
+	return (remaining);
 }
 
-static char	*fill_line(char	*str)
+static char *save_file(char *line)
 {
-	int		len;
-	int		i;
-	char	*line;
-
-	len = 0;
-	i = 0;
-	if (!str || !str[i])
-		return (NULL);
-	while (str[len] && str[len] != '\n')
-		len++;
-	line = (char *)malloc(len + 2 * sizeof(char));
-	if (!line)
-		return (NULL);
-	while (str[i] && str[i] != '\n')
-	{
-		line[i] = str[i];
-		i++;
-	}
-	if (str[i] == '\n')
-		line[i++] = '\n';
-	line[i++] = '\0';
-	return (line);
+    char    *rest;
+    size_t    i;
+    
+    i = 0;
+    while (line[i] != '\n' && line[i] != '\0')
+        i++;
+    if (line[i] == '\0' || line[1] == '\0')
+        return (NULL);
+    rest = ft_substr(line, i + 1, ft_strlen(line) - i);
+    if (*rest == 0)
+    {
+        free(rest);
+        rest = NULL;
+    }   
+    line[i + 1] = '\0';
+    return (rest);
 }
-
 
 #include <fcntl.h>
 #include <stdio.h>
@@ -103,13 +99,11 @@ int	main(void)
 
 	fd = open("test.txt", O_RDONLY);
 	line = get_next_line(fd);
-	// while (line)
-	// {
+	while (line != NULL)
+	{
 		printf("%s", line);
 		free(line);
-	// }
+	}
 	close(fd);
 	return (0);
 }
-
-//cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c

@@ -5,27 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/06 12:27:56 by lbento            #+#    #+#             */
-/*   Updated: 2025/08/13 19:43:10 by lbento           ###   ########.fr       */
+/*   Created: 2025/08/14 10:51:22 by lbento            #+#    #+#             */
+/*   Updated: 2025/08/14 10:51:22 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
+# ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+# define BUFFER_SIZE 42
 # endif
 
-# include <unistd.h>
 # include <stdlib.h>
+# include <unistd.h>
 
-char	*get_next_line(int fd);
-size_t	ft_strlen(const char *str);
-char	*ft_strchr(const char *s, int c);
-void	*ft_calloc(size_t nmemb, size_t size);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strdup(const char *s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+char    *get_next_line(int fd);
+char	*ft_strchr(char *s, int c);
+char	*ft_strdup(char *s1);
+size_t	ft_strlen(char *s);
+char	*ft_substr(char *s, unsigned int start, size_t len);
+char	*ft_strjoin(char *s1, char *s2);
 
 #endif
