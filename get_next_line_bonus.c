@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/14 10:51:16 by lbento            #+#    #+#             */
-/*   Updated: 2025/08/15 14:07:04 by lbento           ###   ########.fr       */
+/*   Created: 2025/08/15 13:47:29 by lbento            #+#    #+#             */
+/*   Updated: 2025/08/15 14:06:37 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd);
 char	*read_line(int fd, char *remaining, char *buffer);
@@ -18,7 +18,7 @@ char	*save_file(char *line);
 
 char	*get_next_line(int fd)
 {
-	static char	*remaining;
+	static char	*remaining[MAX_FD];
 	char		*line;
 	char		*buffer;
 	int			test_read;
@@ -29,18 +29,18 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (fd < 0 || BUFFER_SIZE <= 0 || test_read < 0)
 	{
-		free(remaining);
+		free(remaining[fd]);
 		free(buffer);
-		remaining = NULL;
+		remaining[fd] = NULL;
 		buffer = NULL;
 		return (NULL);
 	}
-	line = read_line(fd, remaining, buffer);
+	line = read_line(fd, remaining[fd], buffer);
 	free(buffer);
 	buffer = NULL;
 	if (!line)
 		return (NULL);
-	remaining = save_file(line);
+	remaining[fd] = save_file(line);
 	return (line);
 }
 

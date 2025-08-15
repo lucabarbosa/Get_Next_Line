@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/14 10:51:08 by lbento            #+#    #+#             */
-/*   Updated: 2025/08/15 13:50:47 by lbento           ###   ########.fr       */
+/*   Created: 2025/08/15 13:50:17 by lbento            #+#    #+#             */
+/*   Updated: 2025/08/15 14:07:30 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strchr(char *s, int c);
 char	*ft_strdup(char *s1);
@@ -75,7 +75,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 		return (malloc(1));
 	if (len > ft_strlen(s + start))
 		len = ft_strlen(s + start);
-	str = malloc((len + 1) * sizeof(char));
+	str = malloc(len + 1);
 	if (!str)
 		return (NULL);
 	i = 0;
