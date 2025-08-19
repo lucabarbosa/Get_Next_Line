@@ -97,24 +97,31 @@ char	*save_file(char *line)
 	return (rest);
 }
 
-// #include <fcntl.h>
-// #include <stdio.h>
+// #include<stdio.h>
+// #include<fcntl.h>
 
 // int	main(void)
 // {
-// 	int		fd;
-// 	char	*line;
+// 	int	fd[2];
+// 	char	*result;
 
-// 	fd = open("test.txt", O_RDONLY);
-// 	line = get_next_line(fd);
-// 	if(!line)
-// 	printf("Vindo nulo");
-// 	while (line)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	close(fd);
+// 	fd[0] = open("test.txt", O_RDONLY);
+// 	fd[1] = open("test2.txt", O_RDONLY);
+
+// 	result = get_next_line(fd[0]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[1]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[0]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[1]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[0]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[1]);
+// 	printf("%s", result);
+
+// 	close(fd[0]);
+// 	close(fd[1]);
 // 	return (0);
 // }
