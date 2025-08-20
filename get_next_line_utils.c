@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 10:51:08 by lbento            #+#    #+#             */
-/*   Updated: 2025/08/15 13:50:47 by lbento           ###   ########.fr       */
+/*   Updated: 2025/08/15 14:32:39 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ char	*ft_strchr(char *s, int c)
 	unsigned int	i;
 	char			cc;
 
-	cc = (char) c;
+	cc = (char)c;
 	i = 0;
 	while (s[i])
 	{
 		if (s[i] == cc)
-			return ((char *) &s[i]);
+			return ((char *)&s[i]);
 		i++;
 	}
 	if (s[i] == cc)
@@ -38,10 +38,12 @@ char	*ft_strchr(char *s, int c)
 
 char	*ft_strdup(char *s1)
 {
+	size_t			size_s1;
 	char			*dest;
 	unsigned int	i;
 
-	dest = (char *) malloc(ft_strlen(s1) + 1);
+	size_s1 = (ft_strlen(s1) + 1);
+	dest = (char *) malloc(size_s1);
 	if (!dest)
 		return (NULL);
 	i = 0;
@@ -67,15 +69,17 @@ size_t	ft_strlen(char *s)
 char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	size_t	i;
+	size_t	size_s;
 	char	*str;
 
+	size_s = ft_strlen(s);
 	if (!s)
 		return (NULL);
-	if (start > ft_strlen(s))
+	if (start > size_s)
 		return (malloc(1));
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	str = malloc((len + 1) * sizeof(char));
+	if (len > (size_s + start))
+		len = (size_s + start);
+	str = malloc(len + 1);
 	if (!str)
 		return (NULL);
 	i = 0;

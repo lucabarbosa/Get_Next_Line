@@ -6,7 +6,7 @@
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 10:51:16 by lbento            #+#    #+#             */
-/*   Updated: 2025/08/15 14:07:04 by lbento           ###   ########.fr       */
+/*   Updated: 2025/08/20 20:33:55 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,13 @@ char	*get_next_line(int fd)
 	static char	*remaining;
 	char		*line;
 	char		*buffer;
-	int			test_read;
 
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	test_read = read(fd, 0, 0);
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
-	if (fd < 0 || BUFFER_SIZE <= 0 || test_read < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
-		free(remaining);
-		free(buffer);
+		free (buffer);
 		remaining = NULL;
 		buffer = NULL;
 		return (NULL);
@@ -39,7 +36,10 @@ char	*get_next_line(int fd)
 	free(buffer);
 	buffer = NULL;
 	if (!line)
+	{
+		remaining = NULL;
 		return (NULL);
+	}
 	remaining = save_file(line);
 	return (line);
 }

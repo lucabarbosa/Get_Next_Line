@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbento <lbento@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/15 13:47:29 by lbento            #+#    #+#             */
-/*   Updated: 2025/08/15 14:06:37 by lbento           ###   ########.fr       */
+/*   Created: 2025/08/20 20:34:24 by lbento            #+#    #+#             */
+/*   Updated: 2025/08/20 20:37:49 by lbento           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,13 @@ char	*get_next_line(int fd)
 	static char	*remaining[MAX_FD];
 	char		*line;
 	char		*buffer;
-	int			test_read;
 
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	test_read = read(fd, 0, 0);
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
-	if (fd < 0 || BUFFER_SIZE <= 0 || test_read < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
-		free(remaining[fd]);
-		free(buffer);
+		free (buffer);
 		remaining[fd] = NULL;
 		buffer = NULL;
 		return (NULL);
@@ -39,7 +36,10 @@ char	*get_next_line(int fd)
 	free(buffer);
 	buffer = NULL;
 	if (!line)
+	{
+		remaining[fd] = NULL;
 		return (NULL);
+	}
 	remaining[fd] = save_file(line);
 	return (line);
 }
@@ -98,6 +98,33 @@ char	*save_file(char *line)
 }
 
 // #include<stdio.h>
+// #include<fcntl.h>
+
+// int	main(void)
+// {
+// 	int	fd[2];
+// 	char	*result;
+
+// 	fd[0] = open("test.txt", O_RDONLY);
+// 	fd[1] = open("test2.txt", O_RDONLY);
+
+// 	result = get_next_line(fd[0]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[1]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[0]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[1]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[0]);
+// 	printf("%s", result);
+// 	result = get_next_line(fd[1]);
+// 	printf("%s", result);
+
+// 	close(fd[0]);
+// 	close(fd[1]);
+// 	return (0);
+// }// #include<stdio.h>
 // #include<fcntl.h>
 
 // int	main(void)
